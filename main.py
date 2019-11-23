@@ -25,8 +25,8 @@ if __name__ == "__main__":
         "-fs",
         "--sampling_frequency",
         dest="sampling_frequency",
-        default=16000,
-        help="Sampling frequency of synthesized signal (must match fs of analysis signals).",
+        default=8000,
+        help="Sampling frequency of synthesized signal (must match fs of analyzed audio files).",
         type=int
     )
     args = parser.parse_args()

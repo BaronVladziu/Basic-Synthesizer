@@ -6,7 +6,7 @@ import numpy as np
 
 def dft(x: np.array) -> np.array:
     n = len(x)
-    y = np.zeros(n)
+    y = np.zeros(n, dtype=np.complex_)
     for k in range(n):
         for t in range(n):
             y[k] += x[t]*np.exp(-2j*np.pi*t*k/n)
@@ -15,7 +15,7 @@ def dft(x: np.array) -> np.array:
 
 def idft(y: np.array) -> np.array:
     n = len(y)
-    x = np.zeros(n)
+    x = np.zeros(n, dtype=np.complex_)
     for t in range(n):
         for k in range(n):
             x[t] += y[k]*np.exp(2j*np.pi*t*k/n)
