@@ -2,11 +2,12 @@
 # -*- coding: utf-8 -*-
 
 from argparse import ArgumentParser
+from synthesis.synthesizer import Synthesizer
 
 
 def main(command: str) -> None:
-    print('Synthesizing command "' + command + '"...')
-    raise NotImplementedError("To be implemented")
+    synthesizer = Synthesizer()
+    synthesizer.synthesize(command)
 
 
 if __name__ == "__main__":
