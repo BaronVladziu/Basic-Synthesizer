@@ -64,4 +64,4 @@ Summer
 ```
 result in audio file with the word "Lato" inside.
 
-Synthesized audio saved as an `.wav` file in the main directory.
+Synthesized audio saved as an `.wav` file in the `output` directory.
