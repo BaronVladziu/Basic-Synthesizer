@@ -4,7 +4,7 @@ This project is a very simple parametric speech synthesizer.
 
 ## Features:
 
-It's (will be) capable of synthesizing following words (all are in Polish language):
+It's capable of synthesizing following words (all are in Polish language):
 
 1) Poniedziałek (Monday)
 2) Wtorek (Tuesday)
@@ -23,11 +23,34 @@ It's (will be) capable of synthesizing following words (all are in Polish langua
 
 - Python 3.6+
 
+## Start:
+
+### For windows:
+
+To start synthesizer install packages from `requirements.txt` file
+and run `main.py` script with synthesis command as argument.
+
+Example:
+```shell
+python main.py --command "Sobota"
+```
+
+### For linux:
+
+```shell
+./create-venv.sh
+./run-synthesizer.sh <synthesis_command>
+```
+
+Example:
+```shell
+./create-venv.sh
+./run-synthesizer.sh "Sobota"
+```
+
 ## Usage:
 
-To start synthesizer run `main.py` script.
-
-You will be able to write command for synthesis then.
+After start you will be able to write command for synthesis.
 
 You can use polish or english word and numeric identifier,
 but all will result in the same audio file.
@@ -39,7 +62,6 @@ Lato
 Summer
 9
 ```
-result in audio file with the word "Sobota" inside.
+result in audio file with the word "Lato" inside.
 
-Synthesized audio is played when synthesized and
-saved as an `.wav` file in the main directory.
+Synthesized audio saved as an `.wav` file in the main directory.
