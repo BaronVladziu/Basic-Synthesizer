@@ -1,10 +1,14 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 
-from command_parser import CommandParser
+from synthesis.base_signal_generator import BaseSignalGenerator
+from synthesis.command_parser import CommandParser
 
 
 class Synthesizer:
+    def __init__(self, sampling_frequency: int):
+        self.sampling_frequency = sampling_frequency
+
     def synthesize(self, command: str) -> None:
         print('Synthesizing command "' + command + '"...')
 
@@ -15,10 +19,11 @@ class Synthesizer:
         raise NotImplementedError("To be implemented")
 
         # Synthesize all frames (generated base signal + filter)
-            raise NotImplementedError("To be implemented")
+        base_signal_generator = BaseSignalGenerator(self.sampling_frequency)
+        raise NotImplementedError("To be implemented")
 
         # Merge all frames using overlap-add technique
-            raise NotImplementedError("To be implemented")
+        raise NotImplementedError("To be implemented")
 
         # Save to file
-            raise NotImplementedError("To be implemented")
+        raise NotImplementedError("To be implemented")

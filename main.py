@@ -5,8 +5,8 @@ from argparse import ArgumentParser
 from synthesis.synthesizer import Synthesizer
 
 
-def main(command: str) -> None:
-    synthesizer = Synthesizer()
+def main(command: str, sampling_frequency: int) -> None:
+    synthesizer = Synthesizer(sampling_frequency)
     synthesizer.synthesize(command)
 
 
@@ -21,6 +21,14 @@ if __name__ == "__main__":
         help="Command for synthesis.",
         type=str
     )
+    parser.add_argument(
+        "-fs",
+        "--sampling_frequency",
+        dest="sampling_frequency",
+        default=16000,
+        help="Sampling frequency of synthesized signal (must match fs of analysis signals).",
+        type=int
+    )
     args = parser.parse_args()
 
-    main(args.command)
+    main(args.command, args.sampling_frequency)

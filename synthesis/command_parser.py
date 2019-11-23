@@ -39,7 +39,7 @@ class CommandParser:
         self.avaliable_commands['Zima'] = 'Winter'
         self.avaliable_commands['Winter'] = 'Winter'
 
-    def parse_command(command: str) -> str:
+    def parse_command(self, command: str) -> str:
         if command not in self.avaliable_commands.keys():
             raise ValueError('Unknown synthesis command used!')
         return self.avaliable_commands[command]
