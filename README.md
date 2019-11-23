@@ -2,7 +2,7 @@
 
 This project is a very simple parametric speech synthesizer.
 
-## Features:
+## Features
 
 It's capable of synthesizing following words (all are in Polish language):
 
@@ -19,13 +19,13 @@ It's capable of synthesizing following words (all are in Polish language):
 10) Jesień (Autumn)
 11) Zima (Winter)
 
-## Requirements:
+## Requirements
 
 - Python 3.6+
 
-## Start:
+## Start
 
-### For windows:
+### For windows
 
 To start synthesizer install packages from `requirements.txt` file
 and run `main.py` script with synthesis command as argument.
@@ -35,7 +35,7 @@ Example:
 python main.py --command "Sobota"
 ```
 
-### For linux:
+### For linux
 
 ```shell
 ./create-venv.sh
@@ -48,7 +48,7 @@ Example:
 ./run-synthesizer.sh "Sobota"
 ```
 
-## Usage:
+## Usage
 
 After start you will be able to write command for synthesis.
 
