@@ -37,7 +37,7 @@ class Synthesizer:
         for energies in model.frame_energies:
             dft_frames.append(base_signal_dft*energies)
 
-        # Merge all frames using overlap-add technique
+        # Merge all frames using overlap-add technique  # TODO: Add Hamming window
         synthesized_signal = np.array(np.real(idft(dft_frames[0])))
         for i in range(1, len(dft_frames)):
             synthesized_signal = np.concatenate([synthesized_signal, np.zeros(self.hop)])

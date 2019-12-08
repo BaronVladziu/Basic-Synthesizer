@@ -65,3 +65,13 @@ Summer
 result in audio file with the word "Lato" inside.
 
 Synthesized audio saved as an `.wav` file in the `output` directory.
+
+## TODO
+
+- Add pre-emphasis (analyzer.py)
+- Add Hamming window (analyzer.py)
+- Add Hamming window to OLA method (synthesizer.py)
+- Add voiced / unvoiced tracking (analyzer.py + synthesizer.py)
+- Add fundamental frequency tracking (analyzer.py + synthesizer.py)
+- Add bandwidth filtering instead of simple STFT (analyzer.py + synthesizer.py)
+- Use FFT instead of DFT (fourier_transformation.py)
