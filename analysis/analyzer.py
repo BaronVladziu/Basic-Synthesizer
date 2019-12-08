@@ -15,6 +15,7 @@ class Analyzer:
         self.overlap = overlap
         self.hop = self.frame_length - self.overlap
         self.pre_emphasis = pre_emphasis
+        self.hamming_window = 0.54 - 0.46*np.cos((2*np.pi*np.arange(self.frame_length))/(self.frame_length - 1))
 
     def analyze(self, command: str) -> Model:
         print('Analyzing command "' + command + '"...')
@@ -33,10 +34,10 @@ class Analyzer:
         # Pre-emphasis
         emphasized_signal = np.append(normalized_file_samples[0], normalized_file_samples[1:] - self.pre_emphasis * normalized_file_samples[:-1])
 
-        # Split audio signal to frames
+        # Split audio signal to frames multiplied by hamming window
         frames = list()
         for f in range(int((len(emphasized_signal) - self.frame_length)/self.hop)):
-            frames.append(emphasized_signal[f*self.hop:f*self.hop+self.frame_length])  # TODO: Add Hamming window
+            frames.append(emphasized_signal[f*self.hop:f*self.hop+self.frame_length]*self.hamming_window)
         
         # Compute absolute value of dft of every frame
         dft_frames = list()
