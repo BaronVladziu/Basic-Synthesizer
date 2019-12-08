@@ -9,11 +9,12 @@ from tools.model import Model
 
 
 class Analyzer:
-    def __init__(self, sampling_frequency: int, frame_length: int, overlap: int):
+    def __init__(self, sampling_frequency: int, frame_length: int, overlap: int, pre_emphasis: float):
         self.sampling_frequency = sampling_frequency
         self.frame_length = frame_length
         self.overlap = overlap
         self.hop = self.frame_length - self.overlap
+        self.pre_emphasis = pre_emphasis
 
     def analyze(self, command: str) -> Model:
         print('Analyzing command "' + command + '"...')
@@ -29,12 +30,13 @@ class Analyzer:
         # Remove mean value
         normalized_file_samples = file_samples - np.mean(file_samples)
 
-        # TODO: Add pre-emphasis
+        # Pre-emphasis
+        emphasized_signal = np.append(normalized_file_samples[0], normalized_file_samples[1:] - self.pre_emphasis * normalized_file_samples[:-1])
 
         # Split audio signal to frames
         frames = list()
-        for f in range(int((len(normalized_file_samples) - self.frame_length)/self.hop)):
-            frames.append(normalized_file_samples[f*self.hop:f*self.hop+self.frame_length])  # TODO: Add Hamming window
+        for f in range(int((len(emphasized_signal) - self.frame_length)/self.hop)):
+            frames.append(emphasized_signal[f*self.hop:f*self.hop+self.frame_length])  # TODO: Add Hamming window
         
         # Compute absolute value of dft of every frame
         dft_frames = list()
