@@ -16,6 +16,7 @@ class Synthesizer:
         self.frame_length = 256
         self.overlap = int(0.25*self.frame_length)
         self.hop = self.frame_length - self.overlap
+        self.pre_emphasis = 0.97
 
     def synthesize(self, command: str) -> None:
         # Parse command
@@ -23,7 +24,7 @@ class Synthesizer:
         parsed_command = command_parser.parse_command(command)
 
         # Create model of given word
-        analyzer = Analyzer(self.sampling_frequency, self.frame_length, self.overlap)
+        analyzer = Analyzer(self.sampling_frequency, self.frame_length, self.overlap, self.pre_emphasis)
         model = analyzer.analyze(parsed_command)
 
         # Create base signal
