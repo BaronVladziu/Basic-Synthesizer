@@ -7,7 +7,7 @@ import numpy as np
 import scipy.io.wavfile
 from synthesis.base_signal_generator import BaseSignalGenerator
 from tools.command_parser import CommandParser
-from tools.fourier_transformation import dft, idft
+from tools.fourier_transformation import fft, idft
 
 
 class Synthesizer:
@@ -31,7 +31,7 @@ class Synthesizer:
         print('Synthesizing command "' + parsed_command + '"...')
         base_signal_generator = BaseSignalGenerator(self.sampling_frequency)
         base_signal = base_signal_generator.generate_white_noise(model.get_frame_length())
-        base_signal_dft = dft(base_signal)
+        base_signal_dft = fft(base_signal)
 
         # Synthesize all frames (generated base signal + filter)
         dft_frames = list()

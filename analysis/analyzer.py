@@ -4,7 +4,7 @@
 import numpy as np
 import scipy.io.wavfile
 from tools.command_parser import CommandParser
-from tools.fourier_transformation import dft
+from tools.fourier_transformation import fft
 from tools.model import Model
 
 
@@ -38,11 +38,11 @@ class Analyzer:
         frames = list()
         for f in range(int((len(emphasized_signal) - self.frame_length)/self.hop)):
             frames.append(emphasized_signal[f*self.hop:f*self.hop+self.frame_length]*self.hamming_window)
-        
+
         # Compute absolute value of dft of every frame
         dft_frames = list()
         for frame in frames:
-            dft_frames.append(np.abs(dft(frame)))
+            dft_frames.append(np.abs(fft(frame)))
 
         # Return model
         model = Model()
