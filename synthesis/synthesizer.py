@@ -40,9 +40,23 @@ class Synthesizer:
 
         # Merge all frames using overlap-add technique
         synthesized_signal = np.array(np.real(idft(dft_frames[0])) * analyzer.hamming_window)
+        window_signal = analyzer.hamming_window
         for i in range(1, len(dft_frames)):
             synthesized_signal = np.concatenate([synthesized_signal, np.zeros(self.hop)])
+            window_signal = np.concatenate([window_signal, np.zeros(self.hop)])
             synthesized_signal[i*self.hop:i*self.hop+self.frame_length] += np.real(idft(dft_frames[i])) * analyzer.hamming_window
+            window_signal[i*self.hop:i*self.hop+self.frame_length] += analyzer.hamming_window
+
+        # Make sure not to divide by zero
+        for i in range(len(window_signal)):
+            if 0.1 > window_signal[i] > -0.1:
+                if window_signal[i] >= 0:
+                    window_signal[i] = 0.1
+                else:
+                    window_signal[i] = -0.1
+
+        # Divide signal by windows to remove buzzing
+        synthesized_signal = synthesized_signal/window_signal
 
         # Normalize signal
         synthesized_signal /= np.max(synthesized_signal)
