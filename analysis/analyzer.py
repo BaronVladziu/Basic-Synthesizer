@@ -5,7 +5,7 @@ import numpy as np
 import scipy.io.wavfile
 from tools.command_parser import CommandParser
 from tools.fourier_transformation import fft
-from tools.model import Model
+from tools.model import Model, Frame
 
 
 class Analyzer:
@@ -44,7 +44,14 @@ class Analyzer:
         for frame in frames:
             dft_frames.append(np.abs(fft(frame)))
 
+        # Compute base frequency of every frame
+        base_frequencies = list()
+        for frame in frames:
+            base_frequencies.append(100)
+
         # Return model
         model = Model()
-        model.frame_energies = dft_frames
+        for i in range(len(dft_frames)):
+            frame = Frame(energies=dft_frames[i], base_frequency=base_frequencies[i])
+            model.frames.append(frame)
         return model

@@ -27,16 +27,19 @@ class Synthesizer:
         analyzer = Analyzer(self.sampling_frequency, self.frame_length, self.overlap, self.pre_emphasis)
         model = analyzer.analyze(parsed_command)
 
-        # Create base signal
+        # Create base signal generator
         print('Synthesizing command "' + parsed_command + '"...')
         base_signal_generator = BaseSignalGenerator(self.sampling_frequency)
-        base_signal = base_signal_generator.generate_white_noise(model.get_frame_length())
-        base_signal_dft = fft(base_signal)
 
-        # Synthesize all frames (generated base signal + filter)
+        # Synthesize all frames (generate base signal + filter)
         dft_frames = list()
-        for energies in model.frame_energies:
-            dft_frames.append(base_signal_dft*energies)
+        for frame in model.frames:
+            if frame.base_frequency == 0:
+                base_signal = base_signal_generator.generate_white_noise(model.get_frame_length())
+            else:
+                base_signal = base_signal_generator.generate_pulses(model.get_frame_length(), frame.base_frequency)
+            base_signal_dft = fft(base_signal)
+            dft_frames.append(base_signal_dft*frame.energies)
 
         # Merge all frames using overlap-add technique
         synthesized_signal = np.array(np.real(idft(dft_frames[0])) * analyzer.hamming_window)
@@ -61,7 +64,7 @@ class Synthesizer:
         # Normalize signal
         synthesized_signal /= np.max(synthesized_signal)
 
-        # Save to file
+        # Plot and save to file
         plt.plot(synthesized_signal)
         plt.show()
         scipy.io.wavfile.write('output.wav', self.sampling_frequency, synthesized_signal)
