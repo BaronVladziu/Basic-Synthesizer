@@ -35,7 +35,8 @@ class Analyzer:
         normalized_file_samples = file_samples - np.mean(file_samples)
 
         # Pre-emphasis
-        emphasized_signal = np.append(normalized_file_samples[0], normalized_file_samples[1:] - self.pre_emphasis * normalized_file_samples[:-1])
+        # emphasized_signal = np.append(normalized_file_samples[0], normalized_file_samples[1:] - self.pre_emphasis * normalized_file_samples[:-1])
+        emphasized_signal = normalized_file_samples
 
         # Split audio signal to frames multiplied by hamming window
         frames = list()
@@ -54,34 +55,22 @@ class Analyzer:
             # Calculate autocorrelation signal
             autocorrelation_signal = calculate_autocorrelation(frame)
 
-            # Apply lowpass filter
-            autocorrelation_signal = band_filter.filter(autocorrelation_signal)
+            # Find highest value index (above 60Hz and below 200Hz)
+            last_sample_id = int(self.sampling_frequency/60) + 1
+            first_sample_id = int(self.sampling_frequency/200)
+            peak_index = first_sample_id + np.argmax(autocorrelation_signal[first_sample_id:last_sample_id])
+            peak_value = autocorrelation_signal[peak_index]
 
-            # Get absolute value
-            autocorrelation_signal = np.abs(autocorrelation_signal)
-
-            # Find peak indices (above 60Hz)
-            first_sample_id = int(self.sampling_frequency/60)
-            peak_ids = list()
-            for i in range(1, len(autocorrelation_signal[:first_sample_id]) - 1):
-                if autocorrelation_signal[i - 1] <= autocorrelation_signal[i] and autocorrelation_signal[i + 1] <= autocorrelation_signal[i]:
-                    if autocorrelation_signal[i] > 0.2:
-                        if len(peak_ids) == 0 or peak_ids[-1] < i - 1:
-                            peak_ids.append(i)
-
-            if len(peak_ids) > 1:                
-                # Calculate mean distance between peak indices
-                mean_distance = 0
-                for i in range(1, len(peak_ids)):
-                    mean_distance += peak_ids[i] - peak_ids[i-1]
-                mean_distance /= len(peak_ids) - 1
-
+            if peak_value >= 0.4:
                 # Use harmonic pulse generator
-                base_frequencies.append(self.sampling_frequency/(2*mean_distance))
+                base_frequencies.append(self.sampling_frequency/peak_index)
 
             else:
                 # Use white noise generator
                 base_frequencies.append(0)
+        
+        plt.plot(base_frequencies)
+        plt.show()
 
         # Return model
         model = Model()
