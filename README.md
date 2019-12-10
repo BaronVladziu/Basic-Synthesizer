@@ -69,7 +69,6 @@ Synthesized audio saved as an `.wav` file in the `output` directory.
 ## TODO
 
 - Add de-emphasis (synthesizer.py)
-- Add voiced / unvoiced tracking (analyzer.py + synthesizer.py)
-- Add fundamental frequency tracking (analyzer.py + synthesizer.py)
+- Fix fundamental frequency tracking (analyzer.py)
 - Add bandwidth filtering instead of simple STFT (analyzer.py + synthesizer.py)
 - Use IFFT instead of IDFT (fourier_transformation.py)
