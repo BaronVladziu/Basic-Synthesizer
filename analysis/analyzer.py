@@ -35,18 +35,19 @@ class Analyzer:
         normalized_file_samples = file_samples - np.mean(file_samples)
 
         # Pre-emphasis
-        # emphasized_signal = np.append(normalized_file_samples[0], normalized_file_samples[1:] - self.pre_emphasis * normalized_file_samples[:-1])
-        emphasized_signal = normalized_file_samples
+        emphasized_signal = np.append(normalized_file_samples[0], normalized_file_samples[1:] - self.pre_emphasis * normalized_file_samples[:-1])
 
         # Split audio signal to frames multiplied by hamming window
         frames = list()
+        emphasized_frames = list()
         for f in range(int((len(emphasized_signal) - self.frame_length)/self.hop)):
-            frames.append(emphasized_signal[f*self.hop:f*self.hop+self.frame_length]*self.hamming_window)
+            frames.append(normalized_file_samples[f*self.hop:f*self.hop+self.frame_length]*self.hamming_window)
+            emphasized_frames.append(emphasized_signal[f*self.hop:f*self.hop+self.frame_length]*self.hamming_window)
 
         # Compute absolute value of dft of every frame
-        dft_frames = list()
-        for frame in frames:
-            dft_frames.append(np.abs(fft(frame)))
+        dft_emphasized_frames = list()
+        for frame in emphasized_frames:
+            dft_emphasized_frames.append(np.abs(fft(frame)))
 
         # Compute base frequency of every frame
         band_filter = BandFilter(start_frequency=0, stop_frequency=200, sampling_frequency=self.sampling_frequency, order=8)
@@ -70,11 +71,14 @@ class Analyzer:
                 base_frequencies.append(0)
         
         plt.plot(base_frequencies)
+        plt.title('Melody of the voice')
+        plt.xlabel('Time [samples]')
+        plt.ylabel('Fundamental frequency [Hz]')
         plt.show()
 
         # Return model
         model = Model()
-        for i in range(len(dft_frames)):
-            frame = Frame(energies=dft_frames[i], base_frequency=base_frequencies[i])
+        for i in range(len(dft_emphasized_frames)):
+            frame = Frame(energies=dft_emphasized_frames[i], base_frequency=base_frequencies[i])
             model.frames.append(frame)
         return model

@@ -68,7 +68,5 @@ Synthesized audio saved as an `.wav` file in the `output` directory.
 
 ## TODO
 
-- Find a good place for pre-emphasis (analyzer.py)
-- Add de-emphasis (synthesizer.py)
-- Add bandwidth filtering instead of simple STFT (analyzer.py + synthesizer.py)
+- Add exponential bandwidth filtering instead of linear (analyzer.py + synthesizer.py)
 - Use IFFT instead of IDFT (fourier_transformation.py)

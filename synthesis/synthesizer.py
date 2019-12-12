@@ -34,11 +34,14 @@ class Synthesizer:
         # Synthesize all frames (generate base signal + filter)
         dft_frames = list()
         for frame in model.frames:
+            # Generate base signal
             if frame.base_frequency == 0:
                 base_signal = base_signal_generator.generate_white_noise(model.get_frame_length())
             else:
                 base_signal = base_signal_generator.generate_pulses(model.get_frame_length(), frame.base_frequency)
             base_signal_dft = fft(base_signal)
+
+            # Filtration
             dft_frames.append(base_signal_dft*frame.energies)
 
         # Merge all frames using overlap-add technique
@@ -61,10 +64,17 @@ class Synthesizer:
         # Divide signal by windows to remove buzzing
         synthesized_signal = synthesized_signal/window_signal
 
+        # De-emphasis
+        for i in range(1, len(synthesized_signal)):
+            synthesized_signal[i] += self.pre_emphasis*synthesized_signal[i-1]
+
         # Normalize signal
         synthesized_signal /= np.max(synthesized_signal)
 
         # Plot and save to file
         plt.plot(synthesized_signal)
+        plt.title('Synthesized signal')
+        plt.xlabel('Time [samples]')
+        plt.ylabel('Amplitude')
         plt.show()
         scipy.io.wavfile.write('output.wav', self.sampling_frequency, synthesized_signal)
