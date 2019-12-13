@@ -50,7 +50,6 @@ class Analyzer:
             dft_emphasized_frames.append(np.abs(fft(frame)))
 
         # Compute base frequency of every frame
-        band_filter = BandFilter(start_frequency=0, stop_frequency=200, sampling_frequency=self.sampling_frequency, order=8)
         base_frequencies = list()
         for frame in frames:
             # Calculate autocorrelation signal
@@ -72,7 +71,7 @@ class Analyzer:
         
         plt.plot(base_frequencies)
         plt.title('Melody of the voice')
-        plt.xlabel('Time [samples]')
+        plt.xlabel('Time [frames]')
         plt.ylabel('Fundamental frequency [Hz]')
         plt.show()
 
